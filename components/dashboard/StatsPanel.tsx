@@ -10,6 +10,7 @@ import SeasonPerformanceChart from "@/components/dashboard/charts/SeasonPerforma
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TeamStats, TeamMatchesData } from "@/types/matches";
+import ClientOnlyChart from "@/components/dashboard/charts/ClientOnlyChart";
 
 interface StatsPanelProps {
   selectedTeams: TeamStats[];
@@ -75,15 +76,21 @@ export default function StatsPanel({
 
             <TabsContent value="performance" className="m-0 p-0 h-full">
               <div className="grid grid-cols-1 md:grid-cols-2 h-full p-4 gap-4">
-                <TeamPerformanceChart teams={selectedTeams} />
-                <WinLossChart teams={selectedTeams} />
+                <ClientOnlyChart>
+                  <TeamPerformanceChart teams={selectedTeams} />
+                </ClientOnlyChart>
+                <ClientOnlyChart>
+                  <WinLossChart teams={selectedTeams} />
+                </ClientOnlyChart>
               </div>
             </TabsContent>
 
             <TabsContent value="seasons" className="m-0 p-0 h-full">
               <ScrollArea className="h-full">
                 <div className="p-4">
-                  <SeasonPerformanceChart teams={selectedTeams} selectedTeamMatches={selectedTeamMatches} />
+                  <ClientOnlyChart>
+                    <SeasonPerformanceChart teams={selectedTeams} selectedTeamMatches={selectedTeamMatches} />
+                  </ClientOnlyChart>
                 </div>
               </ScrollArea>
             </TabsContent>

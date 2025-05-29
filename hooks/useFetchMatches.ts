@@ -49,10 +49,12 @@ export function useFetchMatches() {
         // Process matches to generate team statistics
         
         // Get unique teams from matches
-        const uniqueTeams = [...new Set([
-          ...processedMatches.map(m => m.team1),
-          ...processedMatches.map(m => m.team2)
-        ])];
+        const teamSet = new Set<string>();
+        processedMatches.forEach(m => {
+          teamSet.add(m.team1);
+          teamSet.add(m.team2);
+        });
+        const uniqueTeams = Array.from(teamSet);
 
         // City coordinates for teams (using actual IPL venues)
         const cityCoordinates: Record<string, { lat: number; lng: number }> = {
