@@ -74,7 +74,7 @@ export default function Dashboard() {
       />
 
       <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 h-full overflow-hidden relative">
+        <div className="flex-1 h-full overflow-hidden relative z-10">
           <MapView
             teams={teamStats}
             selectedTeams={selectedTeams}

@@ -12,7 +12,7 @@ export default function DashboardHeader({
   onCompareToggle
 }: DashboardHeaderProps) {
   return (
-    <header className="border-b border-border bg-card p-2">
+    <header className="border-b border-border bg-card p-2 sticky top-0 z-[1000]">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Trophy className="h-6 w-6 text-chart-1" />
