@@ -28,7 +28,7 @@ export default function StatsPanel({
   const toggleExpanded = () => setIsExpanded(!isExpanded);
 
   return (
-    <div className={`border-t border-border bg-card transition-all duration-300 ${isExpanded ? 'h-[350px]' : 'h-12'}`}>
+    <div className={`border-t border-border bg-card transition-all duration-300 ${isExpanded ? 'h-[500px] md:h-[350px]' : 'h-12'}`}>
       <div className="flex items-center justify-between px-4 h-12">
         <Button
           variant="ghost"
@@ -72,19 +72,21 @@ export default function StatsPanel({
             </TabsContent>
 
             <TabsContent value="performance" className="m-0 p-0 h-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 h-full p-4 gap-4">
-                <ClientOnlyChart>
-                  <TeamPerformanceChart teams={selectedTeams} />
-                </ClientOnlyChart>
-                <ClientOnlyChart>
-                  <WinLossChart teams={selectedTeams} />
-                </ClientOnlyChart>
-              </div>
+              <ScrollArea className="h-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 h-full p-4 gap-4">
+                  <div className="h-[300px] md:h-full">
+                    <ClientOnlyChart>
+                      <TeamPerformanceChart teams={selectedTeams} />
+                    </ClientOnlyChart>
+                  </div>
+                  <div className="h-[300px] md:h-full">
+                    <ClientOnlyChart>
+                      <WinLossChart teams={selectedTeams} />
+                    </ClientOnlyChart>
+                  </div>
+                </div>
+              </ScrollArea>
             </TabsContent>
-
-
-
-
           </div>
         </Tabs>
       )}
