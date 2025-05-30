@@ -7,9 +7,16 @@ import Dashboard from "@/components/dashboard/Dashboard";
 import LoadingScreen from "@/components/ui/loading-screen";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulate loading time for resources
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
 
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <ThemeProvider
