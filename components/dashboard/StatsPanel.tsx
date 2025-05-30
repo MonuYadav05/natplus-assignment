@@ -57,8 +57,6 @@ export default function StatsPanel({
               <TabsList className="w-full justify-start">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="performance">Performance</TabsTrigger>
-                <TabsTrigger value="seasons">Seasons</TabsTrigger>
-                <TabsTrigger value="players">Key Players</TabsTrigger>
               </TabsList>
             </ScrollArea>
           </div>
@@ -85,25 +83,9 @@ export default function StatsPanel({
               </div>
             </TabsContent>
 
-            <TabsContent value="seasons" className="m-0 p-0 h-full">
-              <ScrollArea className="h-full">
-                <div className="p-4">
-                  <ClientOnlyChart>
-                    <SeasonPerformanceChart teams={selectedTeams} selectedTeamMatches={selectedTeamMatches} />
-                  </ClientOnlyChart>
-                </div>
-              </ScrollArea>
-            </TabsContent>
 
-            <TabsContent value="players" className="m-0 p-0 h-full">
-              <ScrollArea className="h-full">
-                <div className="p-4">
-                  <div className="flex justify-center items-center h-64 text-muted-foreground">
-                    Player statistics will be available in the next update
-                  </div>
-                </div>
-              </ScrollArea>
-            </TabsContent>
+
+
           </div>
         </Tabs>
       )}

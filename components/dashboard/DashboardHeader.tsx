@@ -7,20 +7,20 @@ interface DashboardHeaderProps {
   onCompareToggle: () => void;
 }
 
-export default function DashboardHeader({ 
-  compareMode, 
-  onCompareToggle 
+export default function DashboardHeader({
+  compareMode,
+  onCompareToggle
 }: DashboardHeaderProps) {
   return (
-    <header className="border-b border-border bg-card p-4">
+    <header className="border-b border-border bg-card p-2">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-center gap-2">
           <Trophy className="h-6 w-6 text-chart-1" />
           <h1 className="text-xl font-bold">IPL Insights</h1>
         </div>
-        
+
         <div className="flex items-center gap-2">
-          <Button 
+          <Button
             variant={compareMode ? "default" : "outline"}
             size="sm"
             onClick={onCompareToggle}
