@@ -9,10 +9,19 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  PieLabelRenderProps,
 } from "recharts";
 
 interface WinLossChartProps {
   teams: TeamStats[];
+}
+
+interface ChartData {
+  name: string;
+  value: number;
+  color: string;
+  matchesWon?: number;
+  totalMatches?: number;
 }
 
 export default function WinLossChart({ teams }: WinLossChartProps) {
@@ -21,10 +30,15 @@ export default function WinLossChart({ teams }: WinLossChartProps) {
 
   if (teams.length === 1) {
     const team = teams[0];
-    const data = [
+    const data: ChartData[] = [
       { name: 'Wins', value: team.matchesWon, color: 'hsl(var(--chart-1))' },
       { name: 'Losses', value: team.matchesLost, color: 'hsl(var(--chart-3))' },
     ];
+
+    const renderLabel = ({ name, value, percent }: PieLabelRenderProps) => {
+      if (percent === undefined) return '';
+      return `${name}: ${value} (${(percent * 100).toFixed(0)}%)`;
+    };
 
     return (
       <Card className="h-full">
@@ -42,14 +56,22 @@ export default function WinLossChart({ teams }: WinLossChartProps) {
                 outerRadius={90}
                 paddingAngle={2}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={renderLabel}
+                labelLine={true}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [`${value} matches`, '']} />
-              <Legend />
+              <Tooltip
+                formatter={(value: number) => [`${value} matches`, '']}
+              />
+              <Legend
+                formatter={(value, entry) => {
+                  const data = entry.payload as unknown as ChartData;
+                  return `${value}: ${data.value} (${((data.value / (team.matchesWon + team.matchesLost)) * 100).toFixed(0)}%)`;
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -58,12 +80,18 @@ export default function WinLossChart({ teams }: WinLossChartProps) {
   }
 
   // For multiple teams, show win percentage comparison
-  const data = teams.map(team => ({
+  const data: ChartData[] = teams.map(team => ({
     name: team.shortName || team.name.substring(0, 3),
-    fullName: team.name,
     value: team.winRate,
+    matchesWon: team.matchesWon,
+    totalMatches: team.matchesWon + team.matchesLost,
     color: team.color || `hsl(var(--chart-${(teams.indexOf(team) % 5) + 1}))`,
   }));
+
+  const renderMultiTeamLabel = ({ name, value, matchesWon, totalMatches }: PieLabelRenderProps & ChartData) => {
+    if (!matchesWon || !totalMatches) return '';
+    return `${name}: ${matchesWon}/${totalMatches} (${value}%)`;
+  };
 
   return (
     <Card className="h-full">
@@ -80,14 +108,28 @@ export default function WinLossChart({ teams }: WinLossChartProps) {
               outerRadius={90}
               dataKey="value"
               nameKey="name"
-              label={({ name, value }) => `${name}: ${value}%`}
+              label={renderMultiTeamLabel}
+              labelLine={true}
             >
               {data.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => [`${value}%`, 'Win Rate']} labelFormatter={(label) => teams.find(t => t.shortName === label)?.name || label} />
-            <Legend formatter={(value) => teams.find(t => t.shortName === value)?.name || value} />
+            <Tooltip
+              formatter={(value: number, name: string, props: any) => {
+                const data = props.payload as unknown as ChartData;
+                if (!data.matchesWon || !data.totalMatches) return ['', ''];
+                return [`${data.matchesWon}/${data.totalMatches} matches (${value}%)`, 'Win Rate'];
+              }}
+              labelFormatter={(label) => teams.find(t => t.shortName === label)?.name || label}
+            />
+            <Legend
+              formatter={(value, entry) => {
+                const data = entry.payload as unknown as ChartData;
+                if (!data.matchesWon || !data.totalMatches) return '';
+                return `${teams.find(t => t.shortName === value)?.name || value}: ${data.matchesWon}/${data.totalMatches} (${data.value}%)`;
+              }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </CardContent>
