@@ -6,7 +6,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import TeamPerformanceChart from "@/components/dashboard/charts/TeamPerformanceChart";
 import TeamDetailsCard from "@/components/dashboard/TeamDetailsCard";
 import WinLossChart from "@/components/dashboard/charts/WinLossChart";
-import SeasonPerformanceChart from "@/components/dashboard/charts/SeasonPerformanceChart";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TeamStats, TeamMatchesData } from "@/types/matches";
